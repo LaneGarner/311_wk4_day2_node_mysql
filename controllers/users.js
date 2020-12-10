@@ -4,7 +4,7 @@ const { handleSQLError } = require('../sql/error')
 
 exports.getAllUsers = (req, res) => {
   // SELECT ALL USERS
-  pool.query("SELECT * FROM users JOIN usersAddress ON users.id = usersAddress.user_id JOIN usersContact ON users.id = usersContact.user_id;", (err, rows) => {
+  pool.query("SELECT * FROM users JOIN usersAddress ON users.id = usersAddress.user_id JOIN usersContact ON users.id = usersContact.user_id ORDER BY users.id;", (err, rows) => {
     if (err) return handleSQLError(res, err)
     return res.json(rows);
   })
@@ -13,6 +13,7 @@ exports.getAllUsers = (req, res) => {
 exports.getUserById = (req, res) => {
   // SELECT USERS WHERE ID = <REQ PARAMS ID>
   const id = req.params.id;
+
   let sql = "SELECT ?? FROM ?? WHERE ?? = ?"
   // WHAT GOES IN THE BRACKETS
   sql = mysql.format(sql, ['*', "users", "id", id])
